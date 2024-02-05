@@ -1,15 +1,9 @@
-import { useState } from 'react'
+
 import './App.css'
-import ExerciseContainer from './components/ExerciseContainer.jsx'
+import AppRouter from './components/AppRouter.jsx'
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-     <ExerciseContainer />
-    </>
-  )
-}
+const App = () => {
+  return <AppRouter />;
+};
 
 export default App
