@@ -10,7 +10,7 @@ const AddExerciseCard = () => {
 
   return (
     <div
-      className="bg-white p-4 rounded-md shadow-md cursor-pointer"
+      className="bg-white p-4 rounded-md shadow-md cursor-pointer px-3"
       onClick={handleAddExerciseClick}
     >
       <h3 className="text-xl font-semibold text-gray-800">Add New Exercise</h3>
