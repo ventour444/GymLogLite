@@ -12,7 +12,7 @@ const ExerciseContainer = () => {
       try {
         const response = await fetch('/src/data/exercises.json');
         const data = await response.json();
-        setExercises(data.users[0].exercises); // Assuming there's only one user for now
+        setExercises(data.users[0].exercises);
       } catch (error) {
         console.error('Error fetching exercises:', error);
       }
@@ -26,9 +26,9 @@ const ExerciseContainer = () => {
   };
 
   return (
-    <div className="container mx-auto my-8 p-8">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Your Workout Dashboard</h1>
+    <div className="container max-w-md my-8 p-8">
+      <div className="flex justify-between items-center mb-4 max-w-md">
+        <h1 className="text-2xl font-bold px-5">Your Workout Dashboard</h1>
         <button
           onClick={handleLogout}
           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"

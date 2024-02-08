@@ -1,19 +1,16 @@
-// SetCounterModal.js
 import React, { useState } from 'react';
 import SetCounter from './SetCounter';
 
-const SetCounterModal = ({ isOpen, onClose, onIncrement, onDecrement }) => {
+const SetCounterModal = ({ isOpen, onClose, onAddSet }) => {
   const [newSetCount, setNewSetCount] = useState(0);
 
   const handleIncrement = () => {
     setNewSetCount(newSetCount + 1);
-    onIncrement();
   };
 
   const handleDecrement = () => {
     if (newSetCount > 0) {
       setNewSetCount(newSetCount - 1);
-      onDecrement();
     }
   };
 
@@ -27,6 +24,7 @@ const SetCounterModal = ({ isOpen, onClose, onIncrement, onDecrement }) => {
               initialValue={newSetCount}
               onIncrement={handleIncrement}
               onDecrement={handleDecrement}
+              onAddSet={onAddSet}
             />
             <div className="mt-4">
               <button onClick={onClose} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">

@@ -1,4 +1,3 @@
-// ExerciseDetailsPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ExerciseSetList from './ExerciseSetList';
@@ -42,11 +41,21 @@ const ExerciseDetailsPage = () => {
     navigate('/dashboard');
   };
 
-  const handleAddSet = () => {
+  const handleOpenModal = () => {
     setIsModalOpen(true);
   };
 
   const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleAddSet = (newSet) => {
+
+    const updatedExerciseDetails = { ...exerciseDetails };
+    updatedExerciseDetails.sets.push(newSet);
+
+    setExerciseDetails(updatedExerciseDetails);
+
     setIsModalOpen(false);
   };
 
@@ -55,27 +64,21 @@ const ExerciseDetailsPage = () => {
   }
 
   return (
-    <div>
+    <div className='max-w-md p-8'>
       <h1>{exerciseDetails.title}</h1>
       <p>{exerciseDetails.description}</p>
       <ExerciseSetList sets={exerciseDetails.sets} />
+      <button onClick={handleOpenModal} className="bg-blue-500 text-white font-bold py-2 px-4 rounded ">Add Set</button>
       <p>Username: {exerciseDetails.username}</p>
+      <div className='mt-14'>
+        <button onClick={handleBackToDashboard}>Back to Dashboard</button>
+      </div>
       <SetCounterModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        onIncrement={() => {}}
-        onDecrement={() => {}}
+        onAddSet={handleAddSet}
       />
-      <div className='mt-4'>
-        <button onClick={handleAddSet} className="bg-blue-500 text-white font-bold py-2 px-4 mt-4 rounded">
-          Add Set
-        </button>
-      </div>
-      <div className='mt-14'>
-    <button onClick={handleBackToDashboard}>Back to Dashboard</button>
-  </div>
     </div>
-   
   );
 };
 

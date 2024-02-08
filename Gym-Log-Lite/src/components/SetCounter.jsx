@@ -21,6 +21,11 @@ const SetCounter = ({ initialValue, onIncrement, onDecrement, onAddSet }) => {
     setWeight(e.target.value);
   };
 
+  const handleAddSet = () => {
+    const newSet = { reps: count, weight: weight };
+    onAddSet(newSet);
+  };
+
   return (
     <div className="border rounded p-4 mb-4">
       <div className="flex items-center justify-center">
@@ -37,7 +42,7 @@ const SetCounter = ({ initialValue, onIncrement, onDecrement, onAddSet }) => {
         <input type="number" value={weight} onChange={handleWeightChange} className="w-full p-2 border rounded" />
       </div>
       <div className="mt-4">
-        <button onClick={onAddSet} className="bg-blue-500 text-white font-bold py-2 px-4 rounded">Add Set</button>
+        <button onClick={handleAddSet} className="bg-blue-500 text-white font-bold py-2 px-4 rounded">Add Set</button>
       </div>
     </div>
   );
