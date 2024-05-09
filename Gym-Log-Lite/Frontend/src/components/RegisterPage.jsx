@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { addUser } from '../utils/fetchinfo';
 
 const RegisterPage = () => {
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    // Simulating registration logic, replace this with actual registration logic
-    if (password === confirmPassword) {
-      console.log('Registration successful!');
-      navigate('/');
-    } else {
-      console.error('Registration failed. Passwords do not match.');
+  const handleRegister = async () => {
+    try {
+      if (password === confirmPassword) {
+        await addUser(username, email, password);
+        navigate('/');
+      } else {
+        console.error('Registration failed. Passwords do not match.');
+      }
+    } catch (error) {
+      console.error('Error registering:', error);
     }
   };
 
@@ -23,6 +28,21 @@ const RegisterPage = () => {
         <h1 className="text-2xl font-bold mb-4 text-center text-blue-500">Register</h1>
 
         <form>
+          <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-600">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+              required
+            />
+          </div>
+
           <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-medium text-gray-600">
               Email

@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { loginUser } from '../utils/fetchinfo';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    // Simulating login logic, replace this with actual authentication logic
-    if (email === '' && password === '') {
-      console.log('Login successful!');
+  const handleLogin = async () => {
+    try {
+      const { user, token } = await loginUser(email, password);
+      localStorage.setItem('token', token); // Store token in localStorage
+      console.log('Login successful!', user);
       navigate('/dashboard');
-    } else {
+    } catch (error) {
       console.error('Login failed. Invalid email or password.');
     }
   };

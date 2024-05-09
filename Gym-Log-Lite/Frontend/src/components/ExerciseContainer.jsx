@@ -2,28 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ExerciseCard from './ExerciseCard';
 import AddExerciseCard from './AddExerciseCard';
-import { fetchUsers } from '../utils/fetchinfo.js';
+import { fetchCurrentUser } from '../utils/fetchinfo.js'; // Ensure you import fetchCurrentUser
 
 const ExerciseContainer = () => {
-  const navigate = useNavigate(); // Using useNavigate hook for navigation
+  const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
+  const [token, setToken] = useState(null); // State to store the token
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const users = await fetchUsers();
-        // Flatten exercises array from all users and set state
-        const allExercises = users.flatMap(user => user.exercises);
-        setExercises(allExercises);
-        console.log(allExercises);
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
+          console.log('No token found, redirecting to login');
+          navigate('/login'); // Redirect to login if no token is found
+          return;
+        }
+        setToken(storedToken); // Store the retrieved token in state
+
+        const currentUserData = await fetchCurrentUser(storedToken); 
+        setExercises(currentUserData.exercises); // Assuming exercises are part of the user data object
       } catch (error) {
         console.error('Error fetching exercises:', error);
       }
     };
-    
 
     fetchData();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     navigate('/');
