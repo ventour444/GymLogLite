@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 export const getCurrentUser = async (req, res) => {
   try {
-      const userId = req.userId;  // This should be set by your authentication middleware
+      const userId = req.userId;
       const user = await getUserById(userId);
       res.status(200).json(user);
   } catch (error) {

@@ -14,7 +14,7 @@ const authenticateToken = (req, res, next) => {
       return res.status(403).json({ message: 'Invalid token' });
     }
 
-    console.log('Decoded token:', decodedToken); // Log decoded token to inspect its structure
+    console.log('Decoded token:', decodedToken);
     const userId = decodedToken.userId;
 
     if (!userId) {
