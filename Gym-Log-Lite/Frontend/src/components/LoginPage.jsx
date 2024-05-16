@@ -10,7 +10,7 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       const { user, token } = await loginUser(email, password);
-      localStorage.setItem('token', token); // Store token in localStorage
+      localStorage.setItem('token', token);
       console.log('Login successful!', user);
       navigate('/dashboard');
     } catch (error) {

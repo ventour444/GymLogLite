@@ -2,26 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ExerciseCard from './ExerciseCard';
 import AddExerciseCard from './AddExerciseCard';
-import { fetchCurrentUser } from '../utils/fetchinfo.js'; // Ensure you import fetchCurrentUser
+import { fetchCurrentUser } from '../utils/fetchinfo.js';
 
 const ExerciseContainer = () => {
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
-  const [token, setToken] = useState(null); // State to store the token
-
+  const [token, setToken] = useState(null);
   useEffect(() => {
     const fetchData = async () => {
       try {
         const storedToken = localStorage.getItem('token');
         if (!storedToken) {
           console.log('No token found, redirecting to login');
-          navigate('/login'); // Redirect to login if no token is found
-          return;
+          navigate('/login'); 
         }
-        setToken(storedToken); // Store the retrieved token in state
+        setToken(storedToken);
 
         const currentUserData = await fetchCurrentUser(storedToken); 
-        setExercises(currentUserData.exercises); // Assuming exercises are part of the user data object
+        setExercises(currentUserData.exercises);
       } catch (error) {
         console.error('Error fetching exercises:', error);
       }
