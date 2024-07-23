@@ -2,23 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ExerciseCard from './ExerciseCard';
 import AddExerciseCard from './AddExerciseCard';
+import SetCounterModal from './SetCounterModal';
 import { fetchCurrentUser } from '../utils/fetchinfo.js';
 
 const ExerciseContainer = () => {
   const navigate = useNavigate();
   const [exercises, setExercises] = useState([]);
+  const [selectedExercise, setSelectedExercise] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [token, setToken] = useState(null);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const storedToken = localStorage.getItem('token');
         if (!storedToken) {
           console.log('No token found, redirecting to login');
-          navigate('/login'); 
+          navigate('/login');
         }
         setToken(storedToken);
 
-        const currentUserData = await fetchCurrentUser(storedToken); 
+        const currentUserData = await fetchCurrentUser(storedToken);
         setExercises(currentUserData.exercises);
       } catch (error) {
         console.error('Error fetching exercises:', error);
@@ -30,6 +34,32 @@ const ExerciseContainer = () => {
 
   const handleLogout = () => {
     navigate('/');
+  };
+
+  const handleAddSet = (exercise) => {
+    setSelectedExercise(exercise);
+    setIsModalOpen(true);
+  };
+
+  const handleSaveSet = (newSet) => {
+    const updatedExercises = exercises.map((exercise) => {
+      if (exercise.id === selectedExercise.id) {
+        return {
+          ...exercise,
+          sets: [...exercise.sets, newSet],
+        };
+      }
+      return exercise;
+    });
+
+    setExercises(updatedExercises);
+    setIsModalOpen(false);
+    setSelectedExercise(null);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedExercise(null);
   };
 
   return (
@@ -47,11 +77,18 @@ const ExerciseContainer = () => {
         <div>
           <h2>Exercises</h2>
           {exercises.map((exercise) => (
-            <ExerciseCard key={exercise.id} exercise={exercise} />
+            <ExerciseCard key={exercise.id} exercise={exercise} onAddSet={() => handleAddSet(exercise)} />
           ))}
         </div>
         <AddExerciseCard />
       </div>
+      {isModalOpen && (
+        <SetCounterModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSave={handleSaveSet}
+        />
+      )}
     </div>
   );
 };

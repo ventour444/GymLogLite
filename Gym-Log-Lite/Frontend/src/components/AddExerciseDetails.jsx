@@ -1,75 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import ExerciseCard from './ExerciseCard';
+import AddExerciseCard from './AddExerciseCard';
+import { fetchCurrentUser } from '../utils/fetchinfo.js';
 
-const AddExerciseDetails = ({ addExercise }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+const AddExerciseDetails = () => {
   const navigate = useNavigate();
+  const [exercises, setExercises] = useState([]);
+  const [token, setToken] = useState(null);
 
-  const handleAddExercise = () => {
-    if (title.trim() === '' ) {
-      alert('Please include a workout.');
-      return;
-    }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const storedToken = localStorage.getItem('token');
+        if (!storedToken) {
+          console.log('No token found, redirecting to login');
+          navigate('/login');
+        }
+        setToken(storedToken);
 
-    const newExercise = {
-      id: Math.floor(Math.random() * 1000),
-      title,
-      description,
+        const currentUserData = await fetchCurrentUser(storedToken);
+        setExercises(currentUserData.exercises);
+      } catch (error) {
+        console.error('Error fetching exercises:', error);
+      }
     };
 
-    addExercise(newExercise);
-    navigate('/dashboard');
+    fetchData();
+  }, [navigate]);
+
+  const handleLogout = () => {
+    navigate('/');
   };
 
-  const handleBackToDashboard = () => {
-    navigate('/dashboard');
+  const handleViewDetails = (exercise) => {
+    navigate(`/exercise/${exercise.id}`);
   };
 
   return (
-    <div className="container mx-auto my-8 p-8 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold mb-4 text-black">Add Exercise Details</h1>
-      <form className="space-y-4">
-        <div className="flex flex-col">
-          <label htmlFor="title" className="text-sm font-medium text-gray-600">
-            Title:
-          </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 bg-slate-200 text-black"
-          />
+    <div className="container max-w-md my-8 p-8">
+      <div className="flex justify-between items-center mb-4 max-w-md">
+        <h1 className="text-2xl font-bold px-5">Your Workout Dashboard</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
+        >
+          Logout
+        </button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-4">
+        <div>
+          <h2>Exercises</h2>
+          {exercises.map((exercise) => (
+            <ExerciseCard key={exercise.id} exercise={exercise} onViewDetails={() => handleViewDetails(exercise)} />
+          ))}
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="description" className="text-sm font-medium text-gray-600 bg">
-            Description:
-          </label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300 bg-slate-200 text-black"
-          />
-        </div>
-        <div className="flex justify-between">
-          <button
-            type="button"
-            onClick={handleAddExercise}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-          >
-            Add Exercise
-          </button>
-          <button
-            type="button"
-            onClick={handleBackToDashboard}
-            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded"
-          >
-            Back to Dashboard
-          </button>
-        </div>
-      </form>
+        <AddExerciseCard />
+      </div>
     </div>
   );
 };

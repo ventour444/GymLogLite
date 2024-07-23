@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
-import SetCounter from './SetCounter';
 
-const SetCounterModal = ({ isOpen, onClose, onAddSet }) => {
-  const [newSetCount, setNewSetCount] = useState(0);
+const SetCounterModal = ({ isOpen, onClose, onSave }) => {
+  const [reps, setReps] = useState(0);
+  const [weight, setWeight] = useState(0);
 
-  const handleIncrement = () => {
-    setNewSetCount(newSetCount + 1);
+  const handleSave = () => {
+    const newSet = { reps, weight };
+    onSave(newSet);
+    onClose();
   };
 
-  const handleDecrement = () => {
-    if (newSetCount > 0) {
-      setNewSetCount(newSetCount - 1);
-    }
-  };
+  if (!isOpen) return null;
 
   return (
-    <>
-      {isOpen && (
-        <div className="fixed top-0 left-0 right-0 bottom-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white rounded-lg p-4">
-            <h2 className="text-lg font-semibold mb-2">Add Set</h2>
-            <SetCounter
-              initialValue={newSetCount}
-              onIncrement={handleIncrement}
-              onDecrement={handleDecrement}
-              onAddSet={onAddSet}
-            />
-            <div className="mt-4">
-              <button onClick={onClose} className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">
-                Close
-              </button>
-            </div>
-          </div>
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="bg-white p-4 rounded-lg shadow-lg">
+        <h2 className="text-xl font-bold mb-4">Add Set</h2>
+        <div className="mb-4">
+          <label className="block text-gray-700">Reps:</label>
+          <input
+            type="number"
+            value={reps}
+            onChange={(e) => setReps(Number(e.target.value))}
+            className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+          />
         </div>
-      )}
-    </>
+        <div className="mb-4">
+          <label className="block text-gray-700">Weight:</label>
+          <input
+            type="number"
+            value={weight}
+            onChange={(e) => setWeight(Number(e.target.value))}
+            className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:ring focus:border-blue-300"
+          />
+        </div>
+        <div className="flex justify-end">
+          <button onClick={onClose} className="py-2 px-4 bg-gray-500 text-white rounded-md shadow-sm mr-2">
+            Cancel
+          </button>
+          <button onClick={handleSave} className="py-2 px-4 bg-blue-500 text-white rounded-md shadow-sm">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import ExerciseContainer from './ExerciseContainer';
-import ExerciseDetailsPage from './ExerciseDetailsPage';
+import AddExerciseDetails from './AddExerciseDetails';
 import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
-import AddExerciseDetails from './AddExerciseDetails';
+import ExerciseDetailsPage from './ExerciseDetailsPage';
 
 const AppRouter = () => {
   return (
@@ -22,4 +21,3 @@ const AppRouter = () => {
 };
 
 export default AppRouter;
-
