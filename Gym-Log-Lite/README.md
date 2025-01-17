@@ -1,8 +1,15 @@
-# React + Vite
+# GymLogLite 🏋️‍♂️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A minimalist gym logging app to track your workouts with ease. GymLogLite simplifies exercise tracking, allowing users to log sets, reps, and weights effortlessly. With a secure backend and modern UI, it’s built for simplicity and scalability.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
+
+- User authentication (login).  
+- Log and view exercises, sets, reps, and weights.  
+- Detailed exercise pages for tracking progress.  
+- Secure backend with MongoDB.  
+- Clean and modern design using Tailwind CSS.  
+
+---
